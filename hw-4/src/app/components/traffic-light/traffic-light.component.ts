@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
@@ -9,24 +9,53 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   templateUrl: './traffic-light.component.html',
   styleUrl: './traffic-light.component.css'
 })
-export class TrafficLightComponent implements OnInit {
+export class TrafficLightComponent implements OnInit, OnChanges {
   @Input() type: string = '';
   @Input() startColor: string = '';
+  @Input() broken: boolean = false;
   redColor: string = '';
   yellowColor: string = '';
   greenColor: string = '';
   activeColor: string = '';
   previousActive: string = '';
   crossingAvailable: boolean = true;
+  trafficChangeInterval: any;
+  beenBroken: boolean = false;
 
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.activeColor = this.startColor;
     this.changeTrafficLight();
-    setInterval(() => {
+    this.trafficChangeInterval = setInterval(() => {
       this.changeTrafficLight();
-    }, 5000)
+    }, 5000);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.broken) {
+      clearInterval(this.trafficChangeInterval);
+      
+      this.activeColor = 'yellow';
+      this.greenColor = 'lightgreen';
+      this.redColor = 'lightcoral';
+      
+      this.trafficChangeInterval = setInterval(() => {
+        this.yellowColor = this.yellowColor === 'yellow' ? 'lightyellow' : 'yellow';
+        this.crossingAvailable = false;
+      }, 1000);
+      this.beenBroken = true;
+    }
+
+    if (!this.broken && this.beenBroken) {
+      clearInterval(this.trafficChangeInterval);
+      this.yellowColor = 'lightYellow';
+
+      this.trafficChangeInterval = setInterval(() => {
+        this.changeTrafficLight();
+      }, 5000)
+      this.beenBroken = false;
+    }
   }
 
   changeTrafficLight() {

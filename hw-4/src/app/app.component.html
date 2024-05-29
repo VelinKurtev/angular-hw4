@@ -1,6 +1,7 @@
 <div class="crossroad">
-  <app-traffic-light [startColor]="'green'" [type]="'horizontal'" class="horizontal-1"></app-traffic-light>
-  <app-traffic-light [startColor]="'red'" [type]="'vertical'" class="vertical-1"></app-traffic-light>
-  <app-traffic-light [startColor]="'green'" [type]="'horizontal'" class="horizontal-2"></app-traffic-light>
-  <app-traffic-light [startColor]="'red'" [type]="'vertical'" class="vertical-2"></app-traffic-light>
+  <app-traffic-light [startColor]="'green'" [type]="'horizontal'" [broken]="isBroken(1)" class="horizontal-1"></app-traffic-light>
+  <app-traffic-light [startColor]="'red'" [type]="'vertical'" [broken]="isBroken(2)" class="vertical-1"></app-traffic-light>
+  <app-traffic-light [startColor]="'green'" [type]="'horizontal'" [broken]="isBroken(3)" class="horizontal-2"></app-traffic-light>
+  <app-traffic-light [startColor]="'red'" [type]="'vertical'" [broken]="isBroken(4)" class="vertical-2"></app-traffic-light>
+  <button mat-raised-button color="warn" (click)="breakdown()">Breakdown</button>
 </div>
