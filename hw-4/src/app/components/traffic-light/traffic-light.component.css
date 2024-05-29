@@ -1,18 +1,35 @@
-.traffic-component{
+.traffic-component {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
+}
+
+.vertical.traffic-component {
     flex-direction: column;
 }
 
+.horizontal.traffic-component {
+    flex-direction: row;
+}
+
 .traffic-light {
-    width: 100px;
-    height: 200px;
     background-color: gray;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.vertical.traffic-light {
+    width: 100px;
+    height: 200px;
     flex-direction: column;
+}
+
+.horizontal.traffic-light {
+    width: 200px;
+    height: 100px;
+    flex-direction: row;
 }
 
 .red {

@@ -1,8 +1,8 @@
-<div class="traffic-component">
-    <div class="traffic-light">
+<div class="traffic-component" [ngClass]="{'horizontal': type === 'horizontal', 'vertical': type === 'vertical'}">
+    <div class="traffic-light" [ngClass]="{'horizontal': type === 'horizontal', 'vertical': type === 'vertical'}">
         <div class="red" [style.background-color]="redColor"></div>
         <div class="yellow" [style.background-color]="yellowColor"></div>
         <div class="green" [style.background-color]="greenColor"></div>
     </div>
-    <button mat-raised-button>Cross</button>
+    <button mat-raised-button color="primary" [disabled]="!crossingAvailable" (click)="cross()">Cross</button>
 </div>

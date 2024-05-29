@@ -1,22 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-traffic-light',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatSnackBarModule, CommonModule],
   templateUrl: './traffic-light.component.html',
   styleUrl: './traffic-light.component.css'
 })
 export class TrafficLightComponent implements OnInit {
+  @Input() type: string = '';
+  @Input() startColor: string = '';
   redColor: string = '';
   yellowColor: string = '';
   greenColor: string = '';
-  activeColor: string = 'red';
+  activeColor: string = '';
   previousActive: string = '';
+  crossingAvailable: boolean = true;
+
+  constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.redColor = 'red';
-    this.previousActive = 'red';
+    this.activeColor = this.startColor;
+    this.changeTrafficLight();
     setInterval(() => {
       this.changeTrafficLight();
     }, 5000)
@@ -30,6 +37,7 @@ export class TrafficLightComponent implements OnInit {
 
       this.previousActive = this.redColor;
       this.activeColor = 'yellow';
+      this.crossingAvailable = false;
     } else if (this.activeColor === 'yellow') {
       this.redColor = 'lightcoral';
       this.yellowColor = 'yellow';
@@ -40,6 +48,8 @@ export class TrafficLightComponent implements OnInit {
       } else {
         this.activeColor = 'red';
       }
+      this.crossingAvailable = true;
+
       setTimeout(() => {
         this.changeTrafficLight();
       }, 2000)
@@ -51,6 +61,15 @@ export class TrafficLightComponent implements OnInit {
 
       this.previousActive = this.greenColor;
       this.activeColor = 'yellow';
+      this.crossingAvailable = true;
+    }
+  }
+
+  cross() {
+    if (this.yellowColor === 'yellow') {
+      this._snackBar.open('Improper Crossing', 'Close', {
+        duration: 2000
+      });
     }
   }
 }
